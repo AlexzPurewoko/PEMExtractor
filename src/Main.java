@@ -6,9 +6,9 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		File outDir = new File("/sdcard/Download");
+		File outDir = new File("../output");
 		outDir.mkdirs();
-		File pem = new File("/sdcard/Download", "cacert.pem");
+		File pem = new File("../inputPem", "cacert.pem");
 		PEMExtractor ex = new PEMExtractor(pem, outDir);
 		try
 		{
