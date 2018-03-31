@@ -6,7 +6,7 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		File outDir = new File("/sdcard/Android/PermOut");
+		File outDir = new File("/sdcard/Download");
 		outDir.mkdirs();
 		File pem = new File("/sdcard/Download", "cacert.pem");
 		PEMExtractor ex = new PEMExtractor(pem, outDir);
