@@ -20,18 +20,21 @@ public class PEMExtractor
 		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(pem)));
 		String tmp;
 		StringBuilder mb = new StringBuilder();
-		String nameFile;
+		String nameFile = null;
 		File outTo;
 		FileOutputStream fout;
 		int mode = 0;
 		while((tmp = reader.readLine()) != null){
-			if(tmp.charAt(0) == '#' && tmp.charAt(1) == '#')continue;
+			if(tmp.length() == 0)continue;
+			if( tmp.charAt(0) == '#' && tmp.charAt(1) == '#')continue;
 			if(mode == 0){
 				if(tmp.charAt(0) == '\n')continue;
 				else if(tmp.charAt(0) == '=' && tmp.charAt(1) == '=')continue;
 				else if(tmp.contains(BEGIN_CERTIFICATES)){
 					mode++;
-					if(mb.length() != 0)mb.delete(0, mb.length() -1);
+					if(mb.length() != 0)mb.delete(0, mb.length());
+					mb.append(tmp);
+					mb.append('\n');
 					continue;
 				}
 				else{
@@ -42,6 +45,15 @@ public class PEMExtractor
 			else {
 				if(tmp.contains(END_CERTIFICATES)){
 					mode = 0;
+					mb.append('\n');
+					mb.append(tmp);
+					nameFile+=".crt";
+					outTo = new File(outDir, nameFile);
+					fout = new FileOutputStream(outTo);
+					fout.write(mb.toString().getBytes());
+					fout.close();
+					outTo = null;
+					fout = null;
 					continue;
 				}
 				else mb.append(tmp);
